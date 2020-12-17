@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=infomation-tips
+Comment=在屏幕上显示系统运行信息
+Type=Application
+Exec=/opt/zTools/app/infomation-tips
+Icon=info
+Categories=System
+
+
+# Generated from the DesktopGenerater component of the z-Tools toolkit
