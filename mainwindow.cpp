@@ -98,6 +98,12 @@ QString MainWindow::getCpuUsed()
     }
     cpuFree = list.at(4).toLong();
 
+    if (((cpuAll - old_cpuAll) - (cpuFree - old_cpuFree)) * 100.0 / (cpuAll - old_cpuAll) < 50)
+        mCpuUsed->setStyleSheet("QLabel{ color:rgb(79, 158, 57)}");
+    if (((cpuAll - old_cpuAll) - (cpuFree - old_cpuFree)) * 100.0 / (cpuAll - old_cpuAll) > 50)
+        mCpuUsed->setStyleSheet("QLabel{ color:rgb(199, 189, 80)}");
+    if (((cpuAll - old_cpuAll) - (cpuFree - old_cpuFree)) * 100.0 / (cpuAll - old_cpuAll) > 80)
+        mCpuUsed->setStyleSheet("QLabel{ color:rgb(208, 50, 47)}");
     QString result = QString("CPU:%1%").arg((((cpuAll - old_cpuAll) - (cpuFree - old_cpuFree)) * 100.0 / (cpuAll - old_cpuAll)), 0, 'f', 2, QLatin1Char(' '));
     old_cpuAll = cpuAll;
     old_cpuFree = cpuFree;
@@ -126,6 +132,12 @@ QString MainWindow::getMemUsed()
     swapAll = buff[14];
     swap = buff[14] - buff[15];
 
+    if (memory * 100.0 / memoryAll < 50)
+        mMemUsed->setStyleSheet("QLabel{ color:rgb(79, 158, 57)}");
+    if (memory * 100.0 / memoryAll > 50)
+        mMemUsed->setStyleSheet("QLabel{ color:rgb(199, 189, 80)}");
+    if (memory * 100.0 / memoryAll > 80)
+        mMemUsed->setStyleSheet("QLabel{ color:rgb(208, 50, 47)}");
     QString result = QString("MEM:%1%").arg(memory * 100.0 / memoryAll, 0, 'f', 2, QLatin1Char(' '));
 
     file.close();
