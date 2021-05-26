@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QtMath>
+#include <QPoint>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   ,mCpuUsed(new QLabel())
@@ -21,11 +22,11 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   ,old_download(0)
 {
     getCpuUsed();
-    setAttribute(Qt::WA_TransparentForMouseEvents, true);
-    setAttribute(Qt::WA_TranslucentBackground, true);
+    //setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    //setAttribute(Qt::WA_TranslucentBackground, true);
 
     setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
-//    setAutoFillBackground(false); //这个不设置的话就背景变黑  -- 无解
+	//setAutoFillBackground(false); //这个不设置的话就背景变黑  -- 无解
 //    setWindowOpacity(0);  //0是全透明，1是不透明  窗口及其上面的控件都半透明：
 //    setStyleSheet("background-color:transparent;");  //样式表设置透明
 
@@ -70,6 +71,24 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     timer->start();
 
     connect(timer,&QTimer::timeout, this, &MainWindow::onTimerout);
+}
+QPoint temp;
+bool press = false;
+void MainWindow::mousePressEvent(QMouseEvent *e){
+	if (e->buttons() && Qt::LeftButton) {
+		press = true;
+		temp = e->globalPos() - this->pos();
+		e->accept();
+	}
+}
+void MainWindow::mouseMoveEvent(QMouseEvent *e) {
+	if (press && e->buttons() && Qt::LeftButton) {
+		move(e->globalPos() - temp);
+		e->accept();
+	}
+}
+void MainWindow::mouseReleaseEvent(QMouseEvent *e) {
+	press = false;
 }
 
 long old_cpuAll = 0;
